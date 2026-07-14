@@ -61,6 +61,7 @@ export const page = defineType({
         {type: 'narrativeSplit'},
         {type: 'teamGrid'},
         {type: 'testimonialCarousel'},
+        {type: 'successStories'},
         {type: 'logoStrip'},
         {type: 'ctaBanner'},
         {type: 'iconListPair'},
