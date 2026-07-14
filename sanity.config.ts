@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'Aerievo',
 
-  projectId: 'REPLACE_WITH_PROJECT_ID',
+  projectId: '2su1f8zh',
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],

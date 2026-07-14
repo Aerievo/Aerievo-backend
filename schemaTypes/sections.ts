@@ -22,6 +22,12 @@ const iconTextArray = (name: string, title: string) =>
         type: 'object',
         fields: [
           defineField({name: 'icon', title: 'Icon (Lucide name)', type: 'string'}),
+          defineField({
+            name: 'image',
+            title: 'Image (used instead of icon for photo/illustration cards)',
+            type: 'image',
+            options: {hotspot: true},
+          }),
           defineField({name: 'title', title: 'Title', type: 'string'}),
           defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
           defineField({name: 'link', title: 'Link', type: 'string'}),
@@ -37,6 +43,12 @@ export const hero = defineType({
   fields: [
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({name: 'subtitle', title: 'Subtitle', type: 'text', rows: 3}),
+    defineField({
+      name: 'variant',
+      title: 'Variant',
+      type: 'string',
+      description: 'Optional visual variant key (e.g. dark, photo) consumed by the frontend renderer',
+    }),
     defineField({
       name: 'image',
       title: 'Image',
@@ -55,6 +67,13 @@ export const hero = defineType({
         defineField({name: 'link', title: 'Link', type: 'string'}),
       ],
     }),
+    defineField({
+      name: 'columns',
+      title: 'Columns (when hero embeds a card grid, e.g. Why-Us hero)',
+      type: 'number',
+      options: {list: [2, 3, 4]},
+    }),
+    iconTextArray('cards', 'Cards (optional, e.g. Why-Us hero People/Purpose/Process)'),
   ],
   preview: {
     select: {title: 'title', subtitle: 'subtitle', media: 'image'},
@@ -73,6 +92,12 @@ export const iconFeatureGrid = defineType({
     defineField({name: 'title', title: 'Title', type: 'string'}),
     defineField({name: 'subtitle', title: 'Subtitle', type: 'string'}),
     defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
+    defineField({
+      name: 'variant',
+      title: 'Variant',
+      type: 'string',
+      description: 'Optional visual variant key (e.g. dark, photo) consumed by the frontend renderer',
+    }),
     defineField({
       name: 'columns',
       title: 'Columns (Desktop)',
@@ -263,6 +288,45 @@ export const testimonialCarousel = defineType({
     select: {title: 'title', subtitle: 'subtitle'},
     prepare({title, subtitle}) {
       return {title: 'Testimonial Carousel', subtitle: title || subtitle}
+    },
+  },
+})
+
+export const successStoriesTeaser = defineType({
+  name: 'successStories',
+  title: 'Success Stories Teaser',
+  type: 'object',
+  description: 'Homepage teaser grid of case-study cards (title, image, description, stat bullets, link)',
+  fields: [
+    defineField({name: 'title', title: 'Title', type: 'string'}),
+    defineField({name: 'subtitle', title: 'Subtitle', type: 'string'}),
+    defineField({
+      name: 'stories',
+      title: 'Stories',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({name: 'title', title: 'Title', type: 'string'}),
+            defineField({name: 'slug', title: 'Slug (links to /case-studies/:slug)', type: 'string'}),
+            defineField({
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: {hotspot: true},
+            }),
+            defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
+            defineField({name: 'stats', title: 'Stat Bullets', type: 'array', of: [{type: 'string'}]}),
+          ],
+        },
+      ],
+    }),
+  ],
+  preview: {
+    select: {title: 'title', subtitle: 'subtitle'},
+    prepare({title, subtitle}) {
+      return {title: 'Success Stories Teaser', subtitle: title || subtitle}
     },
   },
 })
@@ -498,6 +562,7 @@ const rawSectionTypes = [
   narrativeSplit,
   teamGrid,
   testimonialCarousel,
+  successStoriesTeaser,
   logoStrip,
   ctaBanner,
   iconListPair,
